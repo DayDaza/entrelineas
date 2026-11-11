@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Entre Líneas: un espacio para conversar sobre respeto, bienestar y relaciones saludables.">
+  <title>Entre Líneas — Un espacio para escucharnos</title>
+  <style>
+    :root {
+      --ink: #292438;
+      --muted: #716b7b;
+      --paper: #fffaf7;
+      --white: #fff;
+      --purple: #704b87;
+      --purple-dark: #543768;
+      --lavender: #f0e9f5;
+      --pink: #f7e2e8;
+      --green: #e8f0e6;
+      --peach: #faebdd;
+      --line: #e9e1e8;
+      --shadow: 0 14px 40px rgba(58, 38, 66, .08);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 85px; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    a { color: inherit; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    h1, h2, h3, h4, p { margin-top: 0; }
+    h1, h2, h3 { line-height: 1.2; }
+    h1 { font-size: clamp(2.5rem, 6vw, 4.7rem); letter-spacing: -.045em; }
+    h2 { font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -.035em; }
+    h3 { font-size: 1.35rem; }
+    section { padding: 88px 24px; }
+    .container { width: min(1120px, 100%); margin: 0 auto; }
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 12px;
+      color: var(--purple);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+    }
+    .muted { color: var(--muted); }
+    .center { text-align: center; }
+    .section-heading { max-width: 720px; margin: 0 auto 38px; }
+    .section-heading p { color: var(--muted); font-size: 1.08rem; }
+
+    .site-header {
+      position: sticky;
+      z-index: 20;
+      top: 0;
+      border-bottom: 1px solid rgba(233, 225, 232, .85);
+      background: rgba(255, 250, 247, .94);
+      backdrop-filter: blur(12px);
+    }
+    .nav-wrap {
+      width: min(1200px, 100%);
+      min-height: 76px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand { text-decoration: none; font-weight: 850; font-size: 1.2rem; }
+    .brand small { display: block; color: var(--muted); font-size: .7rem; font-weight: 500; }
+    .nav-links { display: flex; align-items: center; justify-content: flex-end; gap: 16px; flex-wrap: wrap; }
+    .nav-links a { text-decoration: none; color: #514a5b; font-size: .86rem; font-weight: 650; }
+    .nav-links a:hover { color: var(--purple); }
+    .menu-button { display: none; }
+
+    .hero {
+      min-height: 590px;
+      padding: 90px 24px;
+      display: grid;
+      align-items: center;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 82% 25%, rgba(245, 220, 230, .85), transparent 34%),
+        radial-gradient(ellipse at 10% 85%, rgba(229, 222, 241, .9), transparent 36%),
+        var(--paper);
+    }
+    .hero-content { max-width: 1120px; width: 100%; margin: auto; }
+    .hero-copy { max-width: 720px; }
+    .hero h1 span { color: var(--purple); }
+    .hero-copy > p { max-width: 650px; color: var(--muted); font-size: 1.15rem; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 21px;
+      background: var(--purple);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 750;
+      transition: transform .18s, background .18s;
+    }
+    .button:hover { background: var(--purple-dark); transform: translateY(-2px); }
+    .button.secondary { background: var(--lavender); color: var(--purple-dark); }
+    .button.secondary:hover { background: #e5d9ed; }
+    .button.small { padding: 9px 15px; font-size: .9rem; }
+    .hero-note { margin-top: 18px; color: var(--muted); font-size: .9rem; }
+
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card, .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 25px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+    .topic-card { min-height: 230px; display: flex; flex-direction: column; }
+    .topic-card .icon { font-size: 1.8rem; }
+    .topic-card h3 { margin: 14px 0 8px; }
+    .topic-card p { color: var(--muted); margin-bottom: 18px; }
+    .text-link { margin-top: auto; color: var(--purple); font-weight: 750; text-decoration: none; }
+
+    .idea-band { padding: 60px 24px; background: var(--lavender); }
+    .idea-inner { max-width: 850px; margin: auto; text-align: center; }
+    .idea-inner h2 { margin-bottom: 12px; }
+
+    .tint-lavender { background: #f6f1f8; }
+    .tint-pink { background: #fff4f5; }
+    .tint-green { background: #f2f7f0; }
+    .tint-peach { background: #fff6ed; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: start; }
+    .list { padding-left: 1.25rem; }
+    .list li { margin: 9px 0; }
+    .callout {
+      margin-top: 22px;
+      padding: 18px 20px;
+      border-left: 4px solid var(--purple);
+      border-radius: 0 14px 14px 0;
+      background: rgba(255,255,255,.75);
+    }
+    .concept-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 25px 0; }
+    .concept { padding: 20px; border-radius: 17px; background: rgba(255,255,255,.8); }
+    .concept h3 { margin: 6px 0; font-size: 1.1rem; }
+    .concept p { color: var(--muted); margin-bottom: 0; }
+
+    .tabs { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin: 25px 0; }
+    .tab-button {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 17px;
+      background: var(--white);
+      color: var(--ink);
+      font-weight: 700;
+    }
+    .tab-button[aria-selected="true"] { border-color: var(--purple); background: var(--purple); color: var(--white); }
+    .tab-panel[hidden] { display: none; }
+
+    .story-form { display: grid; gap: 14px; }
+    label { display: block; font-weight: 700; font-size: .92rem; }
+    input, select, textarea {
+      width: 100%;
+      margin-top: 5px;
+      border: 1px solid #dcd3df;
+      border-radius: 12px;
+      padding: 11px 12px;
+      background: var(--white);
+      color: var(--ink);
+    }
+    textarea { min-height: 140px; resize: vertical; }
+    input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible {
+      outline: 3px solid #c9aed8;
+      outline-offset: 2px;
+    }
+    .story-list { display: grid; gap: 12px; margin-top: 18px; }
+    .story-item { padding: 17px; border: 1px solid var(--line); border-radius: 15px; background: var(--white); }
+    .story-item h4 { margin: 0 0 4px; }
+    .story-item p { margin: 8px 0 0; white-space: pre-wrap; }
+
+    .quiz-box { max-width: 720px; margin: auto; }
+    .quiz-question { font-size: 1.2rem; font-weight: 750; }
+    .quiz-options { display: grid; gap: 10px; margin: 18px 0; }
+    .quiz-option {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 15px;
+      background: var(--white);
+      text-align: left;
+    }
+    .quiz-option:hover { border-color: var(--purple); }
+    .quiz-feedback { min-height: 28px; color: var(--purple-dark); font-weight: 700; }
+    .dilemma-list { display: grid; gap: 14px; }
+    .dilemma { overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: var(--white); }
+    .dilemma summary { padding: 18px 20px; cursor: pointer; font-weight: 800; }
+    .dilemma-content { padding: 0 20px 20px; }
+    .dilemma-content p { color: var(--muted); }
+    .perspective { margin-top: 12px; padding: 15px; border-radius: 13px; background: var(--lavender); }
+    .perspective[hidden] { display: none; }
+
+    .help-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .resource-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 18px; }
+    .admin-note { font-size: .88rem; color: var(--muted); }
+    .admin-area[hidden] { display: none; }
+    .video-preview { display: grid; gap: 12px; margin-top: 15px; }
+    .video-preview video { max-width: 100%; border-radius: 14px; background: #211d27; }
+
+    footer { padding: 36px 24px; background: #30263a; color: #f8f2fa; text-align: center; }
+    footer p { margin: 5px 0; }
+    footer a { color: #ead9f2; }
+
+    @media (max-width: 900px) {
+      .nav-links { gap: 10px; }
+      .nav-links a { font-size: .78rem; }
+      .cards, .concept-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 680px) {
+      section { padding: 65px 18px; }
+      .nav-wrap { align-items: flex-start; }
+      .menu-button { display: inline-block; border: 1px solid var(--line); border-radius: 10px; padding: 7px 10px; background: white; }
+      .nav-links { display: none; width: 100%; padding: 8px 0; }
+      .nav-links.open { display: grid; grid-template-columns: 1fr 1fr; }
+      .nav-wrap { flex-wrap: wrap; }
+      .cards, .concept-grid, .two-col, .help-grid, .resource-grid { grid-template-columns: 1fr; }
+      .hero { min-height: 520px; padding: 70px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav-wrap" aria-label="Navegación principal">
+      <a class="brand" href="#inicio">Entre Líneas <small>Un espacio para escucharnos</small></a>
+      <button class="menu-button" id="menuButton" aria-expanded="false" aria-controls="navLinks">☰ Menú</button>
+      <div class="nav-links" id="navLinks">
+        <a href="#inicio">⌂ Inicio</a>
+        <a href="#acoso">🛡️ Acoso</a>
+        <a href="#sexualidad">💗 Sexualidad</a>
+        <a href="#bienestar">🌷 Bienestar</a>
+        <a href="#experiencias">💬 Experiencias</a>
+        <a href="#interactiva">🎮 Interactiva</a>
+        <a href="#ayuda">🫶 Ayuda</a>
+        <a href="#administracion">⚙ Administración</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-content">
+        <div class="hero-copy">
+          <span class="eyebrow">BIENVENIDO/A A ENTRE LÍNEAS</span>
+          <h1>Hay cosas que <span>merecen ser habladas.</span></h1>
+          <p>Un espacio para conversar sobre situaciones que vivimos, sentimos y muchas veces no sabemos cómo expresar. Aquí encontrarás información, reflexiones y actividades sobre el respeto, el bienestar y las relaciones saludables.</p>
+          <a class="button" href="#temas">Comenzar a explorar →</a>
+          <p class="hero-note">Un espacio seguro comienza cuando aprendemos a escucharnos.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="temas">
+      <div class="container">
+        <div class="section-heading center">
+          <span class="eyebrow">UN ESPACIO PARA APRENDER SIN PREJUICIOS ♡</span>
+          <h2>Un espacio para cada conversación</h2>
+          <p>Explora los temas y encuentra información que puede ayudarte a comprender mejor tu entorno.</p>
+        </div>
+        <div class="cards">
+          <article class="card topic-card"><span class="icon">🛡️</span><h3>Acoso y ciberacoso</h3><p>Reconoce las señales, comprende sus consecuencias y descubre cómo actuar.</p><a class="text-link" href="#acoso">Explorar tema →</a></article>
+          <article class="card topic-card"><span class="icon">💗</span><h3>Sexualidad y respeto</h3><p>Hablemos de consentimiento, límites, decisiones y relaciones respetuosas.</p><a class="text-link" href="#sexualidad">Explorar tema →</a></article>
+          <article class="card topic-card"><span class="icon">🌷</span><h3>Salud mental y bienestar</h3><p>Reconoce tus emociones, cuida tu bienestar y aprende a pedir apoyo.</p><a class="text-link" href="#bienestar">Explorar tema →</a></article>
+          <article class="card topic-card"><span class="icon">💬</span><h3>Experiencias compartidas</h3><p>Historias y reflexiones que nos permiten comprender otras perspectivas.</p><a class="text-link" href="#experiencias">Conocer experiencias →</a></article>
+          <article class="card topic-card"><span class="icon">🎮</span><h3>Zona interactiva</h3><p>Participa en actividades y reflexiona sobre dilemas cotidianos.</p><a class="text-link" href="#interactiva">Participar →</a></article>
+          <article class="card topic-card"><span class="icon">🫶</span><h3>Orientación y ayuda</h3><p>Encuentra información sobre dónde buscar orientación y apoyo.</p><a class="text-link" href="#ayuda">Ver recursos →</a></article>
+        </div>
+      </div>
+    </section>
+
+    <div class="idea-band">
+      <div class="idea-inner">
+        <span class="eyebrow">NUESTRA IDEA</span>
+        <h2>Tu voz también importa.</h2>
+        <p>Entre Líneas busca promover conversaciones informadas, respetuosas y libres de prejuicios. No necesitas tener todas las respuestas para comenzar a hablar de lo que importa.</p>
+      </div>
+    </div>
+
+    <section class="tint-lavender" id="acoso">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">01 · CONVIVENCIA DIGITAL Y SOCIAL</span>
+          <h2>Acoso y ciberacoso</h2>
+          <p>Reconocer una situación es el primer paso para no normalizarla.</p>
+        </div>
+        <div class="two-col">
+          <article class="panel">
+            <h3>¿Qué es el acoso?</h3>
+            <p>El acoso implica comportamientos agresivos o intimidatorios que buscan dañar, humillar o someter a otra persona. Puede presentarse en espacios educativos, sociales y cotidianos.</p>
+            <p><strong>En espacios presenciales:</strong> insultos, amenazas, burlas constantes, exclusión intencional, intimidación o agresiones físicas.</p>
+            <p><strong>En espacios digitales:</strong> mensajes ofensivos, difusión de imágenes sin permiso, amenazas, suplantación de identidad o humillaciones en redes.</p>
+          </article>
+          <article class="panel">
+            <h3>¿Cómo identificarlo?</h3>
+            <ul class="list">
+              <li>La conducta genera miedo, incomodidad o humillación.</li>
+              <li>Puede repetirse o mantenerse en el tiempo.</li>
+              <li>Existe una relación de poder o presión.</li>
+              <li>Puede afectar la seguridad y participación de la persona.</li>
+            </ul>
+            <h3>¿Qué puedes hacer?</h3>
+            <ul class="list">
+              <li>No compartas contenido que humille a alguien.</li>
+              <li>Conserva evidencias cuando sea seguro hacerlo.</li>
+              <li>Bloquea y reporta cuentas agresoras.</li>
+              <li>Busca apoyo de personas o instituciones de confianza.</li>
+              <li>Acompaña a quien está viviendo la situación.</li>
+            </ul>
+          </article>
+        </div>
+        <div class="callout"><strong>Recuerda:</strong> compartir una publicación ofensiva también puede contribuir a que el daño continúe. Antes de reenviar, piensa en sus consecuencias.</div>
+      </div>
+    </section>
+
+    <section class="tint-pink" id="sexualidad">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">02 · AUTONOMÍA Y RESPETO</span>
+          <h2>Sexualidad y respeto</h2>
+          <p>Conocerte, tomar decisiones y establecer límites también es parte del bienestar.</p>
+        </div>
+        <article class="panel">
+          <h3>La sexualidad va más allá de lo físico</h3>
+          <p>Incluye aspectos emocionales, afectivos, sociales y personales. Se relaciona con nuestra identidad, la manera en que construimos vínculos y cómo expresamos nuestros límites y decisiones.</p>
+          <div class="concept-grid">
+            <div class="concept"><span>✋</span><h3>Consentimiento</h3><p>Debe ser libre, informado, específico y reversible. Aceptar algo una vez no significa aceptarlo siempre.</p></div>
+            <div class="concept"><span>🔐</span><h3>Privacidad</h3><p>Todas las personas tienen derecho a decidir qué comparten, con quién y en qué circunstancias.</p></div>
+            <div class="concept"><span>🤝</span><h3>Relaciones sanas</h3><p>Se construyen con confianza, comunicación, respeto y libertad, no con vigilancia o presión.</p></div>
+            <div class="concept"><span>💬</span><h3>Comunicación</h3><p>Hablar de límites, expectativas y preocupaciones ayuda a construir vínculos más seguros.</p></div>
+            <div class="concept"><span>🌈</span><h3>Diversidad</h3><p>Respetar las diferencias significa evitar prejuicios y reconocer la dignidad de cada persona.</p></div>
+            <div class="concept"><span>🧭</span><h3>Autonomía</h3><p>Tienes derecho a tomar decisiones sobre tu cuerpo y tu vida sin presiones ni amenazas.</p></div>
+          </div>
+          <div class="callout"><strong>Una idea para llevar contigo:</strong> el amor, la amistad o la confianza no justifican controlar, presionar ni invadir la privacidad de otra persona. Un límite merece respeto.</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="tint-green" id="bienestar">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">03 · AUTOCUIDADO Y EMOCIONES</span>
+          <h2>Salud mental y bienestar</h2>
+          <p>Estar bien no significa sentirse bien todo el tiempo.</p>
+        </div>
+        <article class="panel">
+          <h3>¿Qué significa cuidar la salud mental?</h3>
+          <p>La salud mental está relacionada con nuestro bienestar emocional, psicológico y social. Influye en cómo pensamos, sentimos, nos relacionamos y enfrentamos las situaciones de la vida cotidiana.</p>
+          <div class="concept-grid">
+            <div class="concept"><span>🌱</span><h3>Reconoce tus emociones</h3><p>Identificar lo que sientes puede ayudarte a comprender qué necesitas y cómo expresarlo.</p></div>
+            <div class="concept"><span>⏳</span><h3>Respeta tus tiempos</h3><p>No tienes que resolver todo de inmediato. Descansar también es una necesidad.</p></div>
+            <div class="concept"><span>🫂</span><h3>Busca apoyo</h3><p>Hablar con alguien de confianza o un profesional puede ayudarte a no estar en soledad.</p></div>
+            <div class="concept"><span>📵</span><h3>Cuida tu relación con las redes</h3><p>Tomar descansos y evitar comparaciones constantes puede favorecer tu bienestar.</p></div>
+            <div class="concept"><span>🧘</span><h3>Construye hábitos posibles</h3><p>El descanso, la alimentación, el movimiento y las actividades que disfrutas pueden contribuir a tu bienestar.</p></div>
+            <div class="concept"><span>💜</span><h3>Evita juzgarte</h3><p>Sentir tristeza, ansiedad o frustración no te hace débil ni significa que estés fallando.</p></div>
+          </div>
+          <div class="callout"><strong>Importante:</strong> esta información es educativa y no sustituye la atención de un profesional de salud mental.</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="experiencias">
+      <div class="container">
+        <div class="section-heading center">
+          <span class="eyebrow">04 · VOCES Y PERSPECTIVAS</span>
+          <h2>Experiencias compartidas</h2>
+          <p>Escuchar otras perspectivas puede ayudarnos a sentirnos acompañados y comprender realidades distintas.</p>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Experiencias">
+          <button class="tab-button" role="tab" aria-selected="true" aria-controls="videosPanel" id="videosTab">▶ Videos</button>
+          <button class="tab-button" role="tab" aria-selected="false" aria-controls="storiesPanel" id="storiesTab">✍ Compartir una historia</button>
+        </div>
+        <div class="tab-panel panel" id="videosPanel" role="tabpanel" aria-labelledby="videosTab">
+          <h3>Historias que merecen ser escuchadas</h3>
+          <p class="muted">Explora los videos disponibles. En este prototipo, los videos agregados desde administración aparecen en este navegador.</p>
+          <div id="videoList"><p>▶ Aún no hay videos publicados.</p></div>
+          <p class="muted"><strong>Entre Líneas</strong> · Un espacio para escuchar y reflexionar.</p>
+        </div>
+        <div class="tab-panel panel" id="storiesPanel" role="tabpanel" aria-labelledby="storiesTab" hidden>
+          <h3>Tu experiencia también cuenta 💌</h3>
+          <p class="muted">Comparte una reflexión, una experiencia o un mensaje que pueda ayudar a otras personas.</p>
+          <form class="story-form" id="storyForm">
+            <label for="storyTitle">Título de tu historia
+              <input id="storyTitle" name="title" maxlength="100" required>
+            </label>
+            <label for="storyTopic">Tema
+              <select id="storyTopic" name="topic">
+                <option>Acoso y ciberacoso</option>
+                <option>Sexualidad y respeto</option>
+                <option>Salud mental y bienestar</option>
+                <option>Otra experiencia</option>
+              </select>
+            </label>
+            <label for="storyName">¿Cómo quieres aparecer?
+              <input id="storyName" name="name" maxlength="60" placeholder="Puedes usar un seudónimo">
+            </label>
+            <label for="storyText">Tu historia
+              <textarea id="storyText" name="text" maxlength="3000" required></textarea>
+            </label>
+            <button class="button" type="submit">Compartir mi historia ♡</button>
+            <p class="admin-note">Este prototipo guarda las historias solo en el navegador actual. No tiene envío privado, moderación real ni publicación pública. Para recibir historias de forma segura se necesita un sistema de almacenamiento y revisión.</p>
+          </form>
+          <h3 style="margin-top:30px">Historias compartidas</h3>
+          <div class="story-list" id="storyList"><p class="muted">Todavía no hay historias en esta sesión. ¡Puedes iniciar la conversación!</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tint-peach" id="interactiva">
+      <div class="container">
+        <div class="section-heading center">
+          <span class="eyebrow">05 · PARTICIPA Y REFLEXIONA</span>
+          <h2>Zona interactiva</h2>
+          <p>Aprender también puede ser cuestionar, decidir y mirar una situación desde otra perspectiva.</p>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Actividades">
+          <button class="tab-button" role="tab" aria-selected="true" aria-controls="quizPanel" id="quizTab">⚡ ¿Qué tanto sabes?</button>
+          <button class="tab-button" role="tab" aria-selected="false" aria-controls="dilemmasPanel" id="dilemmasTab">💭 Dilemas sin filtro</button>
+        </div>
+        <div class="tab-panel panel quiz-box" id="quizPanel" role="tabpanel" aria-labelledby="quizTab">
+          <span class="eyebrow">MINI RETO</span>
+          <h3>¿Qué tanto sabes?</h3>
+          <p class="muted">Responde estas preguntas y descubre cuánto sabes sobre los temas de Entre Líneas.</p>
+          <div id="quizContent"></div>
+        </div>
+        <div class="tab-panel" id="dilemmasPanel" role="tabpanel" aria-labelledby="dilemmasTab" hidden>
+          <article class="panel" style="margin-bottom:18px">
+            <h3>💭 Dilemas sin filtro</h3>
+            <p>La vida no siempre presenta situaciones con respuestas fáciles. Lee estos escenarios, ponte en el lugar de sus protagonistas y piensa qué harías tú. No buscamos respuestas perfectas, sino opiniones auténticas.</p>
+            <p><strong>Tu reflexión no será calificada.</strong> Lo importante es expresar tus ideas con libertad y respeto.</p>
+          </article>
+          <div class="dilemma-list" id="dilemmaList"></div>
+          <div class="callout"><strong>♡ Recuerda:</strong> no hay una única respuesta correcta para estos dilemas. Tus experiencias, valores y perspectivas también forman parte de la conversación.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ayuda">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">06 · NO TIENES QUE HACERLO EN SOLEDAD</span>
+          <h2>Orientación y ayuda</h2>
+          <p>Pedir apoyo es una decisión válida. No tienes que esperar a que una situación empeore para hablar de ella.</p>
+        </div>
+        <h3>¿A quién puedes acudir?</h3>
+        <div class="help-grid">
+          <article class="card"><span>🏫</span><h3>En tu institución educativa</h3><p>Consulta los servicios de bienestar universitario, orientación psicológica, coordinación o las rutas institucionales de atención.</p></article>
+          <article class="card"><span>🫂</span><h3>Personas de confianza</h3><p>Un familiar, amigo, docente u otra persona que te escuche sin juzgarte puede ayudarte a dar el primer paso.</p></article>
+          <article class="card"><span>🧠</span><h3>Profesionales de salud</h3><p>Un profesional puede orientarte y ayudarte a encontrar estrategias de acuerdo con tu situación.</p></article>
+        </div>
+        <h3 style="margin-top:30px">Recursos en Colombia</h3>
+        <div class="resource-grid">
+          <article class="card"><span>🚨</span><h3>Línea 123</h3><p>Línea de atención de emergencias en Colombia. Si existe peligro inmediato, busca ayuda urgente.</p></article>
+          <article class="card"><span>🧒</span><h3>Línea 141 del ICBF</h3><p>Canal de orientación y protección para niños, niñas y adolescentes.</p></article>
+        </div>
+        <div class="callout"><strong>Importante:</strong> Entre Líneas es un proyecto educativo e informativo. No es un servicio de atención psicológica, médica ni de emergencias.</div>
+      </div>
+    </section>
+
+    <section class="tint-lavender" id="administracion">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">GESTIÓN DEL SITIO</span>
+          <h2>Administración</h2>
+          <a class="text-link" href="#inicio">← Volver al inicio</a>
+        </div>
+        <div class="panel">
+          <div id="adminLogin">
+            <h3>Acceso administrativo 🔐</h3>
+            <p>Ingresa la contraseña de demostración para gestionar contenido en este navegador.</p>
+            <form id="loginForm" class="story-form">
+              <label for="adminPassword">Contraseña
+                <input id="adminPassword" type="password" autocomplete="current-password" required>
+              </label>
+              <button class="button" type="submit">Ingresar</button>
+            </form>
+            <p class="admin-note">Demo: la contraseña de demostración está escrita en el código fuente. No uses esta versión como sistema de administración seguro en una página pública.</p>
+          </div>
+          <div class="admin-area" id="adminArea" hidden>
+            <h3>🎬 Administrar videos</h3>
+            <form id="videoForm" class="story-form">
+              <label for="videoTitle">Título del video<input id="videoTitle" required maxlength="100"></label>
+              <label for="videoDescription">Descripción<textarea id="videoDescription" maxlength="500"></textarea></label>
+              <label for="videoFile">Seleccionar archivo de video<input id="videoFile" type="file" accept="video/*" required></label>
+              <button class="button" type="submit">Agregar video</button>
+            </form>
+            <h3 style="margin-top:30px">💬 Historias recibidas en esta sesión</h3>
+            <div id="adminStoryList" class="story-list"></div>
+            <button class="button secondary small" id="logoutButton" type="button">Cerrar sesión</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>Entre Líneas</strong> · Un espacio para escucharnos, aprender y respetarnos ♡</p>
+    <p>© <span id="year"></span> Entre Líneas</p>
+  </footer>
+
+  <script>
+    // Prototipo educativo: no sustituye un backend ni una administración segura.
+    const DEMO_PASSWORD = "lineas-demo";
+
+    const menuButton = document.getElementById("menuButton");
+    const navLinks = document.getElementById("navLinks");
+    menuButton.addEventListener("click", () => {
+      const open = navLinks.classList.toggle("open");
+      menuButton.setAttribute("aria-expanded", String(open));
+    });
+    navLinks.addEventListener("click", event => {
+      if (event.target.closest("a")) {
+        navLinks.classList.remove("open");
+        menuButton.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    function setupTabs(buttonIds) {
+      const buttons = buttonIds.map(id => document.getElementById(id));
+      buttons.forEach(button => button.addEventListener("click", () => {
+        buttons.forEach(item => {
+          const selected = item === button;
+          item.setAttribute("aria-selected", String(selected));
+          document.getElementById(item.getAttribute("aria-controls")).hidden = !selected;
+        });
+      }));
+    }
+    setupTabs(["videosTab", "storiesTab"]);
+    setupTabs(["quizTab", "dilemmasTab"]);
+
+    const storage = {
+      get(key, fallback) {
+        try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
+        catch { return fallback; }
+      },
+      set(key, value) {
+        try { localStorage.setItem(key, JSON.stringify(value)); }
+        catch { /* El prototipo seguirá funcionando durante esta visita. */ }
+      }
+    };
+
+    const storyForm = document.getElementById("storyForm");
+    const storyList = document.getElementById("storyList");
+    const adminStoryList = document.getElementById("adminStoryList");
+
+    function renderStories() {
+      const stories = storage.get("entreLineasStories", []);
+      [storyList, adminStoryList].forEach(container => {
+        if (!container) return;
+        container.replaceChildren();
+        if (!stories.length) {
+          const empty = document.createElement("p");
+          empty.className = "muted";
+          empty.textContent = "Todavía no hay historias compartidas.";
+          container.append(empty);
+          return;
+        }
+        stories.forEach(story => {
+          const article = document.createElement("article");
+          article.className = "story-item";
+          const title = document.createElement("h4");
+          title.textContent = story.title;
+          const meta = document.createElement("small");
+          meta.className = "muted";
+          meta.textContent = `${story.topic} · ${story.name || "Anónimo"}`;
+          const text = document.createElement("p");
+          text.textContent = story.text;
+          article.append(title, meta, text);
+          container.append(article);
+        });
+      });
+    }
+    storyForm.addEventListener("submit", event => {
+      event.preventDefault();
+      const form = new FormData(storyForm);
+      const stories = storage.get("entreLineasStories", []);
+      stories.unshift({
+        title: String(form.get("title")).trim(),
+        topic: String(form.get("topic")),
+        name: String(form.get("name")).trim(),
+        text: String(form.get("text")).trim()
+      });
+      storage.set("entreLineasStories", stories);
+      storyForm.reset();
+      renderStories();
+      alert("Tu historia se guardó en este navegador.");
+    });
+    renderStories();
+
+    const quiz = [
+      {
+        question: "¿Compartir una publicación ofensiva sobre otra persona puede contribuir al daño?",
+        options: ["Sí, puede ayudar a que el daño continúe.", "No, si solo la reenvío."],
+        answer: 0,
+        feedback: "Correcto. Reenviar o difundir contenido también puede amplificar el daño."
+      },
+      {
+        question: "¿El consentimiento debe poder cambiarse?",
+        options: ["Sí, es reversible.", "No, una vez aceptado siempre se mantiene."],
+        answer: 0,
+        feedback: "Así es. El consentimiento es libre, específico y reversible."
+      },
+      {
+        question: "¿Pedir apoyo profesional puede ser parte del autocuidado?",
+        options: ["Sí.", "No, solo se pide ayuda cuando todo empeora."],
+        answer: 0,
+        feedback: "Sí. Pedir apoyo es válido y no hace falta esperar a que la situación empeore."
+      },
+      {
+        question: "¿Tener privacidad en una relación significa necesariamente ocultar algo?",
+        options: ["No. La privacidad es un derecho.", "Sí, las parejas deben compartir todas sus contraseñas."],
+        answer: 0,
+        feedback: "Correcto. La confianza no exige renunciar a la privacidad."
+      },
+      {
+        question: "¿Hay una única respuesta correcta para los dilemas de la vida cotidiana?",
+        options: ["No; podemos reflexionar y escuchar distintas perspectivas.", "Sí; todas las situaciones tienen una sola respuesta."],
+        answer: 0,
+        feedback: "Exacto. Reflexionar con respeto permite considerar distintas perspectivas."
+      }
+    ];
+    let quizIndex = 0;
+    let quizScore = 0;
+    function renderQuiz() {
+      const root = document.getElementById("quizContent");
+      root.replaceChildren();
+      if (quizIndex >= quiz.length) {
+        const heading = document.createElement("p");
+        heading.className = "quiz-question";
+        heading.textContent = `¡Reto completado! Tu resultado: ${quizScore} de ${quiz.length}.`;
+        const restart = document.createElement("button");
+        restart.className = "button";
+        restart.textContent = "Volver a empezar";
+        restart.addEventListener("click", () => { quizIndex = 0; quizScore = 0; renderQuiz(); });
+        root.append(heading, restart);
+        return;
+      }
+      const item = quiz[quizIndex];
+      const count = document.createElement("p");
+      count.className = "eyebrow";
+      count.textContent = `Pregunta ${quizIndex + 1} de ${quiz.length}`;
+      const question = document.createElement("p");
+      question.className = "quiz-question";
+      question.textContent = item.question;
+      const options = document.createElement("div");
+      options.className = "quiz-options";
+      const feedback = document.createElement("p");
+      feedback.className = "quiz-feedback";
+      item.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.className = "quiz-option";
+        button.textContent = option;
+        button.addEventListener("click", () => {
+          if (options.dataset.answered) return;
+          options.dataset.answered = "true";
+          if (index === item.answer) quizScore++;
+          feedback.textContent = index === item.answer ? item.feedback : "Gracias por responder. Revisa la información de Entre Líneas y sigue reflexionando.";
+          const next = document.createElement("button");
+          next.className = "button small";
+          next.textContent = quizIndex === quiz.length - 1 ? "Ver resultado →" : "Siguiente →";
+          next.addEventListener("click", () => { quizIndex++; renderQuiz(); });
+          options.after(next);
+        });
+        options.append(button);
+      });
+      root.append(count, question, options, feedback);
+    }
+    renderQuiz();
+
+    const dilemmas = [
+      {
+        category: "🛡️ ACOSO Y CIBERACOSO · 01 / 06",
+        title: "El secreto del grupo 🤐",
+        story: "Estás en un grupo de WhatsApp con tus amigos de la universidad. Una noche, alguien comparte una captura de pantalla de una conversación privada de una compañera y todos comienzan a burlarse de ella. Cuando dices que no te parece correcto, alguien responde que todos se ríen de todos. Temes que, si sigues contradiciéndolos, te excluyan del grupo.",
+        question: "¿Qué harías? ¿Defenderías a tu compañera aunque eso pudiera afectar tu relación con el grupo?",
+        thought: "¿Hasta qué punto el miedo a no encajar puede hacer que participemos o guardemos silencio ante algo que puede lastimar?"
+      },
+      {
+        category: "📱 ACOSO Y CIBERACOSO · 02 / 06",
+        title: "La cuenta anónima 👀",
+        story: "En tu universidad se hace popular una cuenta anónima de confesiones y chismes. Una publicación empieza a circular con comentarios sobre el físico y la vida personal de una estudiante. Algunas personas que conoces la comparten y te ofrecen participar enviando una confesión.",
+        question: "¿Participarías? ¿Qué harías si descubrieras que alguien cercano está detrás de publicaciones ofensivas?",
+        thought: "¿Ser anónimo en internet nos da derecho a publicar cualquier cosa? ¿Qué responsabilidad tenemos al compartir contenido?"
+      },
+      {
+        category: "💗 SEXUALIDAD Y RESPETO · 03 / 06",
+        title: "Una prueba de amor 🔐",
+        story: "Tu pareja te pide las contraseñas de tus redes sociales. Dice que, si confías, no deberías tener problema en compartirlas. Cuando te niegas, empieza a decir que seguramente escondes algo y que las parejas no tienen secretos.",
+        question: "¿Compartirías tus contraseñas para evitar un conflicto? ¿Cómo explicarías que tener privacidad no significa ocultar algo?",
+        thought: "¿Dónde termina la confianza y dónde comienza el control? ¿Es posible construir una relación sana sin renunciar a la privacidad?"
+      },
+      {
+        category: "🤝 SEXUALIDAD Y RESPETO · 04 / 06",
+        title: "La presión de los demás 🎭",
+        story: "En una fiesta, tus amigos insisten en que bebas aunque ya dijiste que no. También empiezan a presionarte para ir a un lugar privado con alguien. No quieres hacer nada con lo que no te sientas cómodo, pero tampoco quieres sentirte excluido.",
+        question: "¿Cómo manejarías la presión? ¿Qué significa para ti tomar una decisión libre?",
+        thought: "¿Por qué a veces cuesta decir que no? ¿Cómo podemos respetar las decisiones de otras personas?"
+      },
+      {
+        category: "🌷 SALUD MENTAL · 05 / 06",
+        title: "La sonrisa que engaña 🎭",
+        story: "Un amigo que suele ser muy divertido te cuenta que está agotado de fingir que todo está bien. Se siente solo, tiene muchas preocupaciones y no sabe cómo hablar con los demás. Te pide que no le cuentes a nadie.",
+        question: "¿Qué harías después de esa conversación? ¿Cómo podrías acompañarlo sin asumir que tienes que resolver sus problemas?",
+        thought: "¿Cómo respetamos su privacidad y actuamos si su seguridad pudiera estar en riesgo? ¿Qué papel puede tener el apoyo profesional?"
+      },
+      {
+        category: "✨ SALUD MENTAL · 06 / 06",
+        title: "Compararse hasta desaparecer 📲",
+        story: "Una compañera pasa mucho tiempo viendo contenido de vidas aparentemente perfectas. Poco a poco se siente inferior, cambia su forma de vestir y deja de disfrutar actividades que antes le encantaban.",
+        question: "¿Cómo abordarías la conversación? ¿Crees que las redes influyen en la manera en que construimos nuestra autoestima?",
+        thought: "¿Cuánto de lo que vemos en redes representa la vida real? ¿Cómo disfrutarlas sin convertirlas en una medida de nuestro valor?"
+      }
+    ];
+    const dilemmaList = document.getElementById("dilemmaList");
+    dilemmas.forEach((item, index) => {
+      const details = document.createElement("details");
+      details.className = "dilemma";
+      const summary = document.createElement("summary");
+      summary.textContent = `${item.category} — ${item.title}`;
+      const content = document.createElement("div");
+      content.className = "dilemma-content";
+      const story = document.createElement("p");
+      story.textContent = item.story;
+      const question = document.createElement("p");
+      question.textContent = item.question;
+      const toggle = document.createElement("button");
+      toggle.className = "button secondary small";
+      toggle.type = "button";
+      toggle.textContent = "Ver otra perspectiva ♡";
+      toggle.setAttribute("aria-expanded", "false");
+      const perspective = document.createElement("div");
+      perspective.className = "perspective";
+      perspective.hidden = true;
+      const strong = document.createElement("strong");
+      strong.textContent = "💡 Para seguir pensando...";
+      const thought = document.createElement("p");
+      thought.textContent = item.thought;
+      perspective.append(strong, thought);
+      toggle.addEventListener("click", () => {
+        perspective.hidden = !perspective.hidden;
+        toggle.setAttribute("aria-expanded", String(!perspective.hidden));
+      });
+      content.append(story, question, toggle, perspective);
+      details.append(summary, content);
+      dilemmaList.append(details);
+    });
+
+    const adminLogin = document.getElementById("adminLogin");
+    const adminArea = document.getElementById("adminArea");
+    document.getElementById("loginForm").addEventListener("submit", event => {
+      event.preventDefault();
+      if (document.getElementById("adminPassword").value === DEMO_PASSWORD) {
+        adminLogin.hidden = true;
+        adminArea.hidden = false;
+        renderStories();
+      } else {
+        alert("Contraseña incorrecta.");
+      }
+    });
+    document.getElementById("logoutButton").addEventListener("click", () => {
+      adminArea.hidden = true;
+      adminLogin.hidden = false;
+      document.getElementById("loginForm").reset();
+    });
+
+    const videoForm = document.getElementById("videoForm");
+    const videoList = document.getElementById("videoList");
+    let videoUrls = [];
+    function renderVideos() {
+      videoList.replaceChildren();
+      const videos = storage.get("entreLineasVideos", []);
+      if (!videos.length) {
+        const empty = document.createElement("p");
+        empty.textContent = "▶ Aún no hay videos publicados.";
+        videoList.append(empty);
+        return;
+      }
+      videos.forEach(video => {
+        const article = document.createElement("article");
+        article.className = "story-item";
+        const title = document.createElement("h4");
+        title.textContent = video.title;
+        const description = document.createElement("p");
+        description.textContent = video.description;
+        article.append(title, description);
+        if (video.data) {
+          const player = document.createElement("video");
+          player.controls = true;
+          player.preload = "metadata";
+          player.src = video.data;
+          article.append(player);
+        } else {
+          const note = document.createElement("small");
+          note.className = "muted";
+          note.textContent = "El archivo de video está disponible solo en la sesión en que se seleccionó.";
+          article.append(note);
+        }
+        videoList.append(article);
+      });
+    }
+    videoForm.addEventListener("submit", event => {
+      event.preventDefault();
+      const file = document.getElementById("videoFile").files[0];
+      if (!file) return;
+      if (file.size > 20 * 1024 * 1024) {
+        alert("Para este prototipo, selecciona un video de hasta 20 MB.");
+        return;
+      }
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        const videos = storage.get("entreLineasVideos", []);
+        videos.unshift({
+          title: document.getElementById("videoTitle").value.trim(),
+          description: document.getElementById("videoDescription").value.trim(),
+          data: reader.result
+        });
+        storage.set("entreLineasVideos", videos);
+        renderVideos();
+        videoForm.reset();
+      });
+      reader.readAsDataURL(file);
+    });
+    renderVideos();
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
